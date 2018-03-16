@@ -27,7 +27,7 @@ public class Code implements Serializable {
 	public static final int REQUEST_NO_EXISTS_CODE = 44;
 	// 请求错误通用提示
 	public static final String REQUEST_ERROR_TIP = "请求无效！";
-	// 系统错误（服务的错误）
+	// 系统错误（服务端错误）
 	public static final int SYSTEM_ERROR_CODE = 50;
 	// 系统错误通用提示
 	public static final String SYSTEM_ERROR_TIP = "系统错误！";

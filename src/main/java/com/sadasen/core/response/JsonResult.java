@@ -23,27 +23,12 @@ public class JsonResult {
 	}
 	
 	private JsonResult(Status codeNemu, String msg) {
-		switch(codeNemu) {
-		case REQUEST_FAILURE:
-			code = Code.REQUEST_ERROR_CODE; break;
-		case REQUEST_LACK:
-			code = Code.REQUEST_PARAM_LACK_CODE; break;
-		case REQUEST_VALID:
-			code = Code.REQUEST_PARAM_VALID_CODE; break;
-		case REQUEST_PERMISSION:
-			code = Code.REQUEST_PERMISSION_CODE; break;
-		case REQUEST_NO_EXISTS:
-			code = Code.REQUEST_NO_EXISTS_CODE; break;
-		case SYSTEM_ERROR:
-			code = Code.SYSTEM_ERROR_CODE; break;
-		default:
-			code = Code.REQUEST_SUCCESS_CODE; break;
-		}
-		if(null==msg) {
+		setCode(codeNemu);
+		if(null==msg || "".equals(msg.trim())) {
 			if(4==code%10) {
-				msg = Code.REQUEST_ERROR_TIP;
+				this.msg = Code.REQUEST_ERROR_TIP;
 			} else if(5==code%10) {
-				msg = Code.SYSTEM_ERROR_TIP;
+				this.msg = Code.SYSTEM_ERROR_TIP;
 			}
 		}
 	}
