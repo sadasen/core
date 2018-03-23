@@ -18,35 +18,52 @@ public class JsonResult {
 	private JsonResult() {
 	}
 	
-	private JsonResult(Object data) {
-		this.data = data;
-	}
-	
-	private JsonResult(Status codeNemu, String msg) {
-		setCode(codeNemu);
+	public static JsonResult instance(Status status, String msg, Object data) {
+		JsonResult result = new JsonResult();
+		result.setCode(status);
 		if(null==msg || "".equals(msg.trim())) {
-			if(4==code%10) {
-				this.msg = Code.REQUEST_ERROR_TIP;
-			} else if(5==code%10) {
-				this.msg = Code.SYSTEM_ERROR_TIP;
+			if(1==result.getCode()/100) {
+				result.setMsg(Code.REQUEST_SUCCESS_TIP);
+			} else if(6==result.getCode()/100) {
+				result.setMsg(Code.REQUEST_ERROR_TIP);
+			} else if(8==result.getCode()/100) {
+				result.setMsg(Code.SYSTEM_ERROR_TIP);
+			} else {
+				result.setMsg("系统返回数据JsonResult出现严重问题！");
 			}
+		} else {
+			result.setMsg(msg);
 		}
+		result.setData(data);
+		return result;
 	}
 	
 	public static JsonResult instance() {
-		return new JsonResult();
+		return instance(Status.SUCCESS, Code.REQUEST_SUCCESS_TIP, null);
 	}
 	
-	public static JsonResult instance(Object object) {
-		return new JsonResult(object);
+	public static JsonResult instance(Object data) {
+		return instance(Status.SUCCESS, Code.REQUEST_SUCCESS_TIP, data);
 	}
 	
 	public static JsonResult instance(Status code) {
-		return new JsonResult(code, null);
+		return instance(code, null, null);
 	}
 	
-	public static JsonResult instance(String msg, Status code) {
-		return new JsonResult(code, msg);
+	public static JsonResult instance(String msg) {
+		return instance(Status.SUCCESS, msg, null);
+	}
+	
+	public static JsonResult instance(Status code, String msg) {
+		return instance(code, msg, null);
+	}
+	
+	public static JsonResult instance(Status code, Object data) {
+		return instance(code, null, data);
+	}
+	
+	public static JsonResult instance(String msg, Object data) {
+		return instance(Status.SUCCESS, msg, data);
 	}
 
 	public Object getData() {
@@ -71,7 +88,7 @@ public class JsonResult {
 			code = Code.REQUEST_PARAM_VALID_CODE; break;
 		case REQUEST_PERMISSION:
 			code = Code.REQUEST_PERMISSION_CODE; break;
-		case REQUEST_NO_EXISTS:
+		case REQUEST_NOT_EXISTS:
 			code = Code.REQUEST_NO_EXISTS_CODE; break;
 		case SYSTEM_ERROR:
 			code = Code.SYSTEM_ERROR_CODE; break;
